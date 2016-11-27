@@ -1,3 +1,5 @@
+package conwaysgame;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -123,11 +125,12 @@ public class World
         }
     }
     
-    public void clicked(int x, int y,int i) {
+    public TreeInt clicked(int x, int y,int i) {
         
         int tileX = x/Tile.getWidth();
         int tileY = y/Tile.getHeight();
-        tiles[tileX] [tileY].changeStatus(i);
+        int new_state=tiles[tileX] [tileY].changeStatus(i);
+        return new TreeInt(tileX,tileY,new_state);
     }
      
     private void open(int x, int y)

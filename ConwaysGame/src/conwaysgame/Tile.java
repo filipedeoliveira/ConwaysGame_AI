@@ -1,3 +1,5 @@
+package conwaysgame;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -35,12 +37,13 @@ public class Tile
         this.ativado=ativado;
     }
      
-    public void changeStatus(int i) {
+    public int changeStatus(int i) {
         if(status==0){
             status=i;
         }else{
             status=0;
         }
+        return status;
     }
     
     public void setOpenedImage(BufferedImage openedImage)

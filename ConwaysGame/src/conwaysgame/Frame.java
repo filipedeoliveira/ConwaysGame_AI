@@ -1,5 +1,6 @@
-
+package conwaysgame;
  
+import jade.gui.GuiEvent;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -21,11 +22,13 @@ public class Frame extends JFrame implements MouseListener, KeyListener
      
     private int insetLeft;
     private int insetTop;
+    
+    private InterfaceAgent myagent;
      
-    public Frame()
+    public Frame(InterfaceAgent a)
     {
         super("MineSweeper");
-         
+        myagent=a; 
         world = new World();
          
         setResizable(false);
@@ -74,7 +77,10 @@ public class Frame extends JFrame implements MouseListener, KeyListener
     public void mouseReleased(MouseEvent e)
     {
         // MUDAR QUANDO OUVER MAIS AGENTES PARA ALEM DO NORMAL
-        world.clicked(e.getX() - insetLeft, e.getY() - insetTop,1);
+        TreeInt cell=world.clicked(e.getX() - insetLeft, e.getY() - insetTop,1);
+        String msg=""+cell.getX()+","+cell.getY()+","+cell.getState();
+        GuiEvent ge= new GuiEvent(msg,1);
+        myagent.postGuiEvent(ge);
         /*if(e.getButton() == 1) world.clickedLeft(e.getX() - insetLeft, e.getY() - insetTop);
         if(e.getButton() == 3) world.clickedRight(e.getX() - insetLeft, e.getY() - insetTop);*/
         screen.repaint();
