@@ -6,11 +6,13 @@ import jade.lang.acl.ACLMessage;
 import jade.core.Agent;
 
 public class CountdownBehaviour extends TickerBehaviour {
-
+    
+    GenerationCounter agent;
     int gen = 0;
 
-    public CountdownBehaviour(Agent a, long period) {
+    public CountdownBehaviour(GenerationCounter a, long period) {
         super(a, period);
+        agent=a;
     }
 
     protected void onTick() {
@@ -28,7 +30,7 @@ public class CountdownBehaviour extends TickerBehaviour {
             }
         }
         //myAgent.gen++;
-        gen++;
+        agent.gen++;
     }
 
 }

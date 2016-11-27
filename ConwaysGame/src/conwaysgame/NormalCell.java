@@ -16,8 +16,8 @@ import java.util.Random;
 
 public class NormalCell extends Agent{
 
-    private int state;
-    private int neighbours;
+    public int state;
+    public int neighbours;
     
 
     protected void setup(){
@@ -26,14 +26,14 @@ public class NormalCell extends Agent{
         //como controlar comportamentos conforme estado???
         //isto dos ifs funciona? penso que nao porque pelo que percebi com o addbehaviour esta acção
         // é adicionada permanentemente ao agente e vai tar a fazela enquanto tiver vivo mas nao tenho a certeza
-        this.addBehaviour(new WarnAlive());
-        this.addBehaviour(new ReceiveMessages());
+        this.addBehaviour(new WarnAlive(this));
+        this.addBehaviour(new ReceiveAliveWarns(this));
         /*if(state==1)
             addBehaviour(new WarnAlive());
         addBehaviour(new ReceiveAliveWarns());*/
     }
     
-    public class WarnAlive extends SimpleBehaviour {
+    /*public class WarnAlive extends SimpleBehaviour {
 
     private boolean finished = false;
     
@@ -98,9 +98,9 @@ public class NormalCell extends Agent{
     }
     
     
-}
+}*/
     
-    public class ReceiveMessages extends CyclicBehaviour {
+    /*public class ReceiveMessages extends CyclicBehaviour {
 
     public void action(){
         ACLMessage msg= receive();
@@ -125,5 +125,5 @@ public class NormalCell extends Agent{
     
     
     
-}
+}*/
 }

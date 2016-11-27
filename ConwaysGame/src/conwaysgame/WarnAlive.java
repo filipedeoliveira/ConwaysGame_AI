@@ -11,7 +11,13 @@ import java.util.logging.Logger;
 public class WarnAlive extends SimpleBehaviour {
 
     boolean finished = false;
+    NormalCell agent;
 
+    
+    public WarnAlive(NormalCell a){
+        super(a);
+        agent=a;
+    }
 
     public void action() {
         AID receiver = new AID();
@@ -26,37 +32,53 @@ public class WarnAlive extends SimpleBehaviour {
 
 
         //enviar mensagem para cada uma das celulas da periferia
-        receiver.setLocalName((part1-1)+","+(part2-1));
-        msg.addReceiver(receiver);
-        myAgent.send(msg);
+        if(part1>0 && part2>0){
+            receiver.setLocalName((part1-1)+","+(part2-1));
+            msg.addReceiver(receiver);
+            myAgent.send(msg);
+        }
+        
+        if(part1>0){
+            receiver.setLocalName((part1-1)+","+(part2));
+            msg.addReceiver(receiver);
+            myAgent.send(msg);
+        }
+        
+        if(part1>0 && part2<49){
+            receiver.setLocalName((part1-1)+","+(part2+1));
+            msg.addReceiver(receiver);
+            myAgent.send(msg);
+        }
+        
+        if(part2>0){
+            receiver.setLocalName((part1)+","+(part2-1));
+            msg.addReceiver(receiver);
+            myAgent.send(msg);
+        }
+        
+        if(part2<49){
+            receiver.setLocalName((part1)+","+(part2+1));
+            msg.addReceiver(receiver);
+            myAgent.send(msg);
+        }
+        
+        if(part1<49 && part2>0){
+            receiver.setLocalName((part1+1)+","+(part2-1));
+            msg.addReceiver(receiver);
+            myAgent.send(msg);
+        }
 
-        receiver.setLocalName((part1-1)+","+(part2));
-        msg.addReceiver(receiver);
-        myAgent.send(msg);
+        if(part1<49){
+            receiver.setLocalName((part1+1)+","+(part2));
+            msg.addReceiver(receiver);
+            myAgent.send(msg);
+        }
 
-        receiver.setLocalName((part1-1)+","+(part2+1));
-        msg.addReceiver(receiver);
-        myAgent.send(msg);
-
-        receiver.setLocalName((part1)+","+(part2-1));
-        msg.addReceiver(receiver);
-        myAgent.send(msg);
-
-        receiver.setLocalName((part1)+","+(part2+1));
-        msg.addReceiver(receiver);
-        myAgent.send(msg);
-
-        receiver.setLocalName((part1+1)+","+(part2-1));
-        msg.addReceiver(receiver);
-        myAgent.send(msg);
-
-        receiver.setLocalName((part1+1)+","+(part2));
-        msg.addReceiver(receiver);
-        myAgent.send(msg);
-
-        receiver.setLocalName((part1+1)+","+(part2+1));
-        msg.addReceiver(receiver);
-        myAgent.send(msg);
+        if(part1<49 && part2<49){
+            receiver.setLocalName((part1+1)+","+(part2+1));
+            msg.addReceiver(receiver);
+            myAgent.send(msg);
+        }
 
         block();
     }
