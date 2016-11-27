@@ -5,6 +5,7 @@
  */
 package conwaysgame;
 
+import jade.core.Runtime;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.wrapper.AgentController;

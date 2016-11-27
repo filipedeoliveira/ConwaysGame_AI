@@ -9,6 +9,7 @@ public class GenerationCounter extends Agent{
     protected int gen=1;
 
     protected void setup(){
-        addBehaviour(new CountdownBehaviour());
+        addBehaviour(new CountdownBehaviour(this, 2000));
+        //addBehaviour(new CountdownBehaviour(this, 2000));
     }
 }
