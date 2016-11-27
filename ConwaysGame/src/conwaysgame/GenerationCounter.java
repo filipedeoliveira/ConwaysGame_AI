@@ -1,6 +1,6 @@
 package conwaysgame;
 
-import java.core.Agent;
+import jade.core.Agent;
 //Talvez venha a não existir
 public class GenerationCounter extends Agent{
 

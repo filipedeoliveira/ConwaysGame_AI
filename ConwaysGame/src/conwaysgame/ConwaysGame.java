@@ -6,6 +6,7 @@
 package conwaysgame;
 
 import jade.core.Profile;
+import jade.core.ProfileImpl;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 

@@ -3,6 +3,7 @@ package conwaysgame;
 import jade.core.behaviours.TickerBehaviour;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
+import jade.core.Agent;
 
 public class CountdownBehaviour extends TickerBehaviour {
 
