@@ -5,6 +5,10 @@
  */
 package conwaysgame;
 
+import jade.core.Profile;
+import jade.wrapper.AgentController;
+import jade.wrapper.ContainerController;
+
 /**
  *
  * @author Filipe Oliveira
