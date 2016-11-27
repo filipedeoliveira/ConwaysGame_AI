@@ -2,7 +2,7 @@
 
 package conwaysgame;
 
-import java.core.Agent;
+import jade.core.Agent;
 
 public class NormalCell extends Agent{
 
