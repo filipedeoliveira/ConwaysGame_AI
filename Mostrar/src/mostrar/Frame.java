@@ -1,4 +1,4 @@
-package conwaysgame;
+package mostrar;
  
 import jade.gui.GuiEvent;
 import java.awt.Font;
@@ -24,11 +24,13 @@ public class Frame extends JFrame implements MouseListener, KeyListener
     private int insetTop;
     
     private InterfaceAgent myagent;
+    private boolean started;
      
     public Frame(InterfaceAgent a)
     {
         super("MineSweeper");
         myagent=a; 
+        started=false;
         world = new World();
          
         setResizable(false);
@@ -85,6 +87,14 @@ public class Frame extends JFrame implements MouseListener, KeyListener
         if(e.getButton() == 3) world.clickedRight(e.getX() - insetLeft, e.getY() - insetTop);*/
         screen.repaint();
     }
+    
+    public void next_gen_value(int x,int y,int state)
+    {
+        world.next_gen_value(x,y,state);
+        /*if(e.getButton() == 1) world.clickedLeft(e.getX() - insetLeft, e.getY() - insetTop);
+        if(e.getButton() == 3) world.clickedRight(e.getX() - insetLeft, e.getY() - insetTop);*/
+        screen.repaint();
+    }
  
     @Override
     public void keyPressed(KeyEvent e)
@@ -97,8 +107,20 @@ public class Frame extends JFrame implements MouseListener, KeyListener
     {
         if(e.getKeyCode() == KeyEvent.VK_R)
         {
-            world.reset();
+            
             screen.repaint();
+        }
+        if(e.getKeyCode()==KeyEvent.VK_SPACE){
+            String msg;
+            if(started){
+                msg="STOP";
+                started=false;
+            }else{
+                msg="START";
+                started=true;
+            }
+            GuiEvent ge=new GuiEvent(msg, 2);
+            myagent.postGuiEvent(ge);
         }
     }
  

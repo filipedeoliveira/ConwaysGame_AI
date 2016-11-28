@@ -1,4 +1,4 @@
-package conwaysgame;
+package mostrar;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;

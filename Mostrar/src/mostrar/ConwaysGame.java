@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package conwaysgame;
+package mostrar;
 
 import jade.core.Runtime;
 import jade.core.Profile;
@@ -22,6 +22,9 @@ public class ConwaysGame {
      */
      Runtime rt;
      ContainerController container;
+     
+     private static int ROWS=5;
+     private static int COLLUMS=5;
 
      public void initMainContainer(String host, String port) {
          this.rt = Runtime.instance();
@@ -48,10 +51,11 @@ public class ConwaysGame {
          ConwaysGame mc = new ConwaysGame();
          mc.initMainContainer("127.0.0.1", "1099");
          int i,j;
-         mc.startAgentInPlatform("GenCounter", "conwaysgame.GenerationCounter");
-         for(i=0;i<50;i++){
-             for(j=0;j<50;j++){
-                 mc.startAgentInPlatform(i+","+j, "conwaysgame.NormalCell");
+         mc.startAgentInPlatform("Coordenator", "mostrar.InterfaceAgent");
+         //mc.startAgentInPlatform("GenCounter", "conwaysgame.GenerationCounter");
+         for(i=0;i<ROWS;i++){
+             for(j=0;j<COLLUMS;j++){
+                 mc.startAgentInPlatform(i+","+j, "mostrar.NormalCell");
              }
          }
      }
