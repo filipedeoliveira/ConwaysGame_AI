@@ -7,8 +7,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
  
 import javax.swing.JFrame;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JPanel;
  
 public class Frame extends JFrame implements MouseListener, KeyListener
@@ -91,8 +93,13 @@ public class Frame extends JFrame implements MouseListener, KeyListener
     public void next_gen_value(int x,int y,int state)
     {
         world.next_gen_value(x,y,state);
-        /*if(e.getButton() == 1) world.clickedLeft(e.getX() - insetLeft, e.getY() - insetTop);
-        if(e.getButton() == 3) world.clickedRight(e.getX() - insetLeft, e.getY() - insetTop);*/
+        
+    }
+    
+    public void next_gen(ArrayList<TreeInt> states) {
+        for(TreeInt t:states){
+            world.next_gen_value(t.getX(), t.getY(), t.getState());
+        }
         screen.repaint();
     }
  
@@ -129,6 +136,8 @@ public class Frame extends JFrame implements MouseListener, KeyListener
     {
          
     }
+
+    
      
     public class Screen extends JPanel
     {

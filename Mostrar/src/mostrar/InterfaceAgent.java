@@ -71,6 +71,9 @@ public class InterfaceAgent extends GuiAgent {
 
                 }
             }
+            
+                    
+                    
             send(msg);
             CyclicBehaviour t2 = new ReceiveStates();
             this.addBehaviour(t2);
@@ -87,18 +90,23 @@ public class InterfaceAgent extends GuiAgent {
                 int x = Integer.parseInt(nameparts[0]);
                 int y = Integer.parseInt(nameparts[1]);
                 int state = Integer.parseInt(nameparts[2]);
+                if(x==2 && y==2){
+                    System.out.println(state);
+                }
                 TreeInt t = new TreeInt(x, y, state);
+                states.add(t);
                 resp++;
                 
-                System.out.println(msg.getSender()+"                   "+resp);
+                //System.out.println(msg.getSender()+"                   "+resp);
                 //board.next_gen_value(x, y, state);
-            }else{
-                System.out.println("BOOM");
             }
-            
-
-            block();
-
+            if(resp==ROWS*COLLUMS){
+                /*for(TreeInt t:states){
+                    System.out.println(t.getX()+ "          "+t.getY()+"     "+t.getState());
+                }*/
+                resp=0;
+                board.next_gen(states);
+            }
         }
 
     }

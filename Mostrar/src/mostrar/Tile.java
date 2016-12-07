@@ -34,12 +34,8 @@ public class Tile
     }
      
     public int changeStatus(int i) {
-        if(status==0){
-            status=i;
-        }else{
-            status=0;
-        }
-        return status;
+        status=i;
+       return status;
     }
     
     

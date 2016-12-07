@@ -3,6 +3,7 @@ package mostrar;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 
@@ -30,7 +31,7 @@ public class NormalCell extends Agent {
         this.addBehaviour(new ReceiveMessages());
     }
 
-    public class WarnAlive extends SimpleBehaviour {
+    public class WarnAlive extends OneShotBehaviour {
 
         public int onEnd() {
             return 0;
@@ -100,44 +101,37 @@ public class NormalCell extends Agent {
             block();
         }
 
-        @Override
-        public boolean done() {
-            return finished;
-        }
-
+       
     }
     
-    public class SendState extends SimpleBehaviour {
+    public class SendState extends OneShotBehaviour {
 
         public int onEnd() {
             return 0;
         }
 
         public void action() {
-            //if (next_state != current_state) {
-            
+            /*if(part1==2 && part2==2){
+                System.out.println(""+neighbours);
+                System.out.println(""+current_state);
+                System.out.println(""+next_state);
+            }*/
                 AID receiver = new AID();
                 ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                 msg.setConversationId("" + System.currentTimeMillis()+part1+","+part2);
                 receiver.setLocalName("Coordenator");
                 msg.addReceiver(receiver);
                 current_state = next_state;
+                if(part1==2 && part2==2){
+                System.out.println(current_state);
+                }
                 msg.setContent(part1 + "," + part2 + "," + current_state);
-                System.out.println(part1+","+part2+"           prepara para enviar");
                 send(msg);
-                System.out.println(part1+","+part2+"           enviar");
-            //}
-        
-            //finished=false;
-            finished2 = true;
-
+                
             block();
         }
 
-        @Override
-        public boolean done() {
-            return finished2;
-        }
+        
 
 
 
@@ -149,23 +143,15 @@ public class NormalCell extends Agent {
         public void action() {
             ACLMessage msg = receive();
             if (msg != null) {
-                //System.out.println(myAgent.getLocalName()+"                 "+msg.getContent());
+                
                 switch (msg.getContent()) {
                     case "Alive":
-                        /*if (myAgent.getLocalName().equals("2,3")) {
-                            System.out.println(msg.getSender().getName());
-                        }*/
+                        
                         neighbours++;
                         break;
                     case "NewGen":
-                        /*if (myAgent.getLocalName().equals("2,3")) {
-                            System.out.println("NewGen");
-                        }
-                        if (myAgent.getLocalName().equals("2,3")) {
-                            System.out.println(myAgent.getLocalName() + "           " + neighbours + "                antes");
-                        }*/
-                        /*if (myAgent.getLocalName().equals("2,3")) {
-                            System.out.println(myAgent.getLocalName() + "           " + neighbours + "                depois");
+                        /*if(myAgent.getLocalName().equals("2,2")){
+                            System.out.println("Nova");
                         }*/
                         if (neighbours < 2 && current_state == 1) {
                             next_state = 0;
@@ -176,17 +162,21 @@ public class NormalCell extends Agent {
                         if (neighbours == 3 && current_state == 0) {
                             next_state = 1;
                         }
+                        
                         neighbours = 0;
                         
                         
-                        s2.action();//answerBack();
-                        s1.action();
+                        //s2.action();//answerBack();
+                        myAgent.addBehaviour(new SendState());
+                        myAgent.addBehaviour(new WarnAlive());
+                        
                         //s1.action();
 
                         break;
                     default:
                         current_state = Integer.parseInt(msg.getContent());
-                        s1.action();
+                        next_state=current_state;
+                        myAgent.addBehaviour(new WarnAlive());
                         break;
                 }
                 
@@ -195,18 +185,7 @@ public class NormalCell extends Agent {
 
         }
 
-        private void answerBack() {
-            if (next_state != current_state) {
-                AID receiver = new AID();
-                ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                msg.setConversationId("" + System.currentTimeMillis());
-                receiver.setLocalName("Coordenator");
-                msg.addReceiver(receiver);
-                current_state = next_state;
-                msg.setContent(part1 + "," + part2 + "," + current_state);
-                send(msg);
-            }
-        }
+        
 
     }
 }
