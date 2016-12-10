@@ -47,7 +47,7 @@ public class Board extends Agent {
             if (msg != null) {
                 switch (msg.getContent()) {
                     case "NewGen"://mensagem a indicar nova geração
-                        System.out.println("Recebi new gen");
+                        //System.out.println("Recebi new gen");
                         myAgent.addBehaviour(new CalcNextGen());
                         break;
                     default:// atualização de estado
@@ -198,7 +198,6 @@ public class Board extends Agent {
         private void normal_next_value(int x, int y) {
             int neighbours;
             neighbours = 0;
-
             if (field[x + 1][y] > 0) {
                 neighbours++;
             }
@@ -241,21 +240,22 @@ public class Board extends Agent {
                 for (y = 0; y < ROWS; y++) {
                     field[x][y] = next_field[x][y];
                     states=states+x+","+y+","+field[x][y]+",";
+                    System.out.println(x+","+y+","+field[x][y]);
                     next_field[x][y] = 0;
                 }
             }
             states= states.substring(0,states.length()-1);
             msg.setContent(states);
-            System.out.println(states);
+            //System.out.println(states);
             myAgent.send(msg);
-            System.out.println("terminei");
+            //System.out.println("terminei");
 
         }
 
         //método que calcula o valor da p´roxima geração com base nos vizinhos
         private void calc_next_value(int x, int y, int neighbours) {
-            if(x==2&&y==2){
-                System.out.println(neighbours);
+            if(neighbours==3){
+                System.out.println(x+","+y);
             }
             if (neighbours < 2 && field[x][y] == 1) {
                 next_field[x][y] = 0;
@@ -266,9 +266,10 @@ public class Board extends Agent {
             if (neighbours == 3 && field[x][y] == 0) {
                 next_field[x][y] = 1;
             }
-            if(neighbours==2 && field[x][y]==1){
+            if((neighbours==2 || neighbours==3) && field[x][y]==1){
                 next_field[x][y]=1;
             }
+            
             //return 0;
         }
 
