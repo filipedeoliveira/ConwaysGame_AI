@@ -59,7 +59,8 @@ public class Board extends Agent {
                         break;
                 }
             }
-            block();
+            else
+                block();
         }
     }
 
