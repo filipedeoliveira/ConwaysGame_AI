@@ -17,6 +17,7 @@ import jade.domain.FIPAException;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
+import java.util.ArrayList;
 import java.util.Random;
 /**
  *
@@ -25,8 +26,12 @@ import java.util.Random;
 public class InterfaceAgent extends GuiAgent{
     protected Frame board;
     
+    private ArrayList<TreeInt> states;
+    
     protected void setup(){
         board= new Frame(this);
+        states=new ArrayList<>();
+        this.addBehaviour(new ReceiveMessages());
         //board.setVisible(true);
     }
     
@@ -37,9 +42,9 @@ public class InterfaceAgent extends GuiAgent{
             String[] nameparts=content.split(",");
             int x=Integer.parseInt(nameparts[0]);
             int y=Integer.parseInt(nameparts[1]);
-            int z=Integer.parseInt(nameparts[1]);
+            int z=Integer.parseInt(nameparts[2]);
             AID receiver=new AID();
-            receiver.setLocalName(x+","+y);
+            receiver.setLocalName("Campo");
             long time =System.currentTimeMillis();
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
             msg.setContent(content);
@@ -47,6 +52,37 @@ public class InterfaceAgent extends GuiAgent{
             msg.addReceiver(receiver);
             send(msg);
         }
+        if(command==2){
+            String content=(String)ev.getSource();
+            AID receiver=new AID();
+            receiver.setLocalName("Campo");
+            long time =System.currentTimeMillis();
+            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            msg.setContent("NewGen");
+            msg.setConversationId(""+time);
+            msg.addReceiver(receiver);
+            send(msg);
+        }
     }
     
+    
+    public class ReceiveMessages extends CyclicBehaviour {
+
+        public void action() {
+            ACLMessage msg = receive();
+            if (msg != null) {
+                System.out.println("recebi mensagem");
+                String[] parts = msg.getContent().split(",");
+                int i=0;
+                for(i=0;i<parts.length;i=i+3){
+                    //System.out.println("entrei");
+                    TreeInt cell= new TreeInt(Integer.parseInt(parts[i]), Integer.parseInt(parts[i+1]), Integer.parseInt(parts[i+2]));
+                    states.add(cell);
+                }
+                board.next_gen(states);
+                states=new ArrayList<>();
+            }
+            block();
+        }
+    }
 }

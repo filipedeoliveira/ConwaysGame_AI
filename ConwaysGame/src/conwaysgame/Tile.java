@@ -151,5 +151,9 @@ public class Tile
         return height;
     }
 
+    public void update_status(int state) {
+        status=state;
+    }
+
     
 }

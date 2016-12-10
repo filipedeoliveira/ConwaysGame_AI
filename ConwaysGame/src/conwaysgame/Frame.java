@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
  
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -100,12 +101,21 @@ public class Frame extends JFrame implements MouseListener, KeyListener
             world.reset();
             screen.repaint();
         }
+        if(e.getKeyCode()==KeyEvent.VK_SPACE){
+            GuiEvent ge= new GuiEvent("NewGen",2);
+            myagent.postGuiEvent(ge);
+        }
     }
  
     @Override
     public void keyTyped(KeyEvent e)
     {
          
+    }
+
+    public void next_gen(ArrayList<TreeInt> states) {
+        world.next_gen(states);
+        screen.repaint();
     }
      
     public class Screen extends JPanel

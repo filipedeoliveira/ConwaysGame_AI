@@ -48,12 +48,13 @@ public class ConwaysGame {
          ConwaysGame mc = new ConwaysGame();
          mc.initMainContainer("127.0.0.1", "1099");
          int i,j;
-         mc.startAgentInPlatform("GenCounter", "conwaysgame.GenerationCounter");
-         for(i=0;i<50;i++){
+         mc.startAgentInPlatform("Interface", "conwaysgame.InterfaceAgent");
+         mc.startAgentInPlatform("Campo", "conwaysgame.Board");
+         /*for(i=0;i<50;i++){
              for(j=0;j<50;j++){
                  mc.startAgentInPlatform(i+","+j, "conwaysgame.NormalCell");
              }
-         }
+         }*/
      }
 
 }
