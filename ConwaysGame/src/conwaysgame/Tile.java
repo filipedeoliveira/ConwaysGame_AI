@@ -119,6 +119,10 @@ public class Tile
             case 1:
                 g.drawImage(ativado, x * width, y * height, null);
                 break;
+            case 2:
+                g.drawImage(caotico, x * width, y * height, null);
+                break;
+               
             default:
         }
         /*if(!opened) 

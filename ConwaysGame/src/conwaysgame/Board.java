@@ -24,6 +24,8 @@ public class Board extends Agent {
     private int[][] field;
     private int[][] next_field;
 
+    private String states;
+
     protected void setup() {
 
         //CRIAR E INICIAR CAMPO
@@ -36,6 +38,7 @@ public class Board extends Agent {
                 next_field[x][y] = 0;
             }
         }
+        states = "";
         this.addBehaviour(new ReceiveMessages());
         //this.addBehaviour(new ReceiveAliveWarns(this));
     }
@@ -51,15 +54,28 @@ public class Board extends Agent {
                         myAgent.addBehaviour(new CalcNextGen());
                         break;
                     default:// atualização de estado
-                        String[] nameparts = msg.getContent().split(",");
-                        int x = Integer.parseInt(nameparts[0]);
-                        int y = Integer.parseInt(nameparts[1]);
-                        int state = Integer.parseInt(nameparts[2]);
-                        field[x][y] = state;
+                        receive_state_list(msg.getContent());
+                        if (msg.getSender().getLocalName().equals("Caotico")) {
+                            myAgent.addBehaviour(new SendStateList());
+                        }
                         break;
                 }
             }
             block();
+        }
+
+        private void receive_state_list(String content) {
+            if (content.length() > 0) {
+                String[] parts = content.split(",");
+                int i = 0;
+                for (i = 0; i < parts.length; i = i + 3) {
+                    int x = Integer.parseInt(parts[i]);
+                    int y = Integer.parseInt(parts[i + 1]);
+                    int state = Integer.parseInt(parts[i + 2]);
+                    field[x][y] = state;
+                    states = states + "," + x + "," + y + "," + state;
+                }
+            }
         }
     }
 
@@ -90,7 +106,8 @@ public class Board extends Agent {
             }
 
             //Atualizar e enviar o campo atual
-            update_and_send_field();
+            //update_and_send_field();
+            update_and_send_actives();
 
             block();
         }
@@ -228,7 +245,7 @@ public class Board extends Agent {
 
         private void update_and_send_field() {
             int x, y;
-            String states="";
+            String states = "";
             AID receiver = new AID();
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
             receiver.setLocalName("Interface");
@@ -239,13 +256,50 @@ public class Board extends Agent {
             for (x = 0; x < COLUMNS; x++) {
                 for (y = 0; y < ROWS; y++) {
                     field[x][y] = next_field[x][y];
-                    states=states+x+","+y+","+field[x][y]+",";
-                    System.out.println(x+","+y+","+field[x][y]);
+                    states = states + x + "," + y + "," + field[x][y] + ",";
+                    //System.out.println(x + "," + y + "," + field[x][y]);
                     next_field[x][y] = 0;
                 }
             }
-            states= states.substring(0,states.length()-1);
+            if(states.length()>0){
+            states = states.substring(0, states.length() - 1);
+            }
             msg.setContent(states);
+            //System.out.println(states);
+            myAgent.send(msg);
+            //System.out.println("terminei");
+
+        }
+
+        private void update_and_send_actives() {
+            int x, y;
+            String actives = "";
+            states = "";
+            AID receiver = new AID();
+            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            receiver.setLocalName("Caotico");
+            msg.addReceiver(receiver);
+
+            //msg.setContent("Alive");
+            msg.setConversationId("" + System.currentTimeMillis());
+            for (x = 0; x < COLUMNS; x++) {
+                for (y = 0; y < ROWS; y++) {
+                    field[x][y] = next_field[x][y];
+                    states = states + x + "," + y + "," + field[x][y] + ",";
+                    if (field[x][y] > 0) {
+                        actives = actives + x + "," + y + "," + field[x][y] + ",";
+                    }
+                    //System.out.println(x + "," + y + "," + field[x][y]);
+                    next_field[x][y] = 0;
+                }
+            }
+            if (actives.length() > 0) {
+                actives = actives.substring(0, actives.length() - 1);
+            }
+            if (states.length() > 0) {
+                states = states.substring(0, states.length() - 1);
+            }
+            msg.setContent(actives);
             //System.out.println(states);
             myAgent.send(msg);
             //System.out.println("terminei");
@@ -254,22 +308,22 @@ public class Board extends Agent {
 
         //método que calcula o valor da p´roxima geração com base nos vizinhos
         private void calc_next_value(int x, int y, int neighbours) {
-            if(neighbours==3){
-                System.out.println(x+","+y);
+            if (neighbours == 3) {
+                System.out.println(x + "," + y);
             }
-            if (neighbours < 2 && field[x][y] == 1) {
+            if (neighbours < 2 && field[x][y] > 0) {
                 next_field[x][y] = 0;
             }
-            if (neighbours > 3 && field[x][y] == 1) {
+            if (neighbours > 3 && field[x][y] > 0) {
                 next_field[x][y] = 0;
             }
             if (neighbours == 3 && field[x][y] == 0) {
                 next_field[x][y] = 1;
             }
-            if((neighbours==2 || neighbours==3) && field[x][y]==1){
-                next_field[x][y]=1;
+            if ((neighbours == 2 || neighbours == 3) && field[x][y] > 0) {
+                next_field[x][y] = 1;
             }
-            
+
             //return 0;
         }
 
@@ -330,5 +384,25 @@ public class Board extends Agent {
             calc_next_value(x, y, neighbours);
         }
 
+    }
+
+    public class SendStateList extends OneShotBehaviour {
+
+        public void action() {
+
+            AID receiver = new AID();
+            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            receiver.setLocalName("Interface");
+            msg.addReceiver(receiver);
+
+            //msg.setContent("Alive");
+            msg.setConversationId("" + System.currentTimeMillis());
+            //states = states.substring(0, states.length() - 1);
+            msg.setContent(states);
+            //System.out.println(states);
+            myAgent.send(msg);
+            //System.out.println("terminei");
+
+        }
     }
 }
