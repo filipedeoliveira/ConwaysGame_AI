@@ -88,9 +88,9 @@ public class Board extends Agent {
                             respostas++;
 
                         }
-                        /*if (respostas == 2) {
+                        if (respostas == 2) {
                             myAgent.addBehaviour(new SendStateList());
-                        }*/
+                        }
                         break;
                 }
             }
@@ -113,7 +113,6 @@ public class Board extends Agent {
 
         private void update_neighbours(String content) {
             if (content.length() > 0) {
-                System.out.println(content);
                 String[] parts = content.split(",");
                 int i = 0;
                 for (i = 0; i < parts.length; i = i + 3) {
@@ -126,8 +125,8 @@ public class Board extends Agent {
                     calc_next_value(x, y, vizinhos[x][y]);
                     //System.out.println(x+","+y+","+next_field[x][y]);
                     states = states +","+ x + "," + y + "," + next_field[x][y];
-                    field[x][y]=next_field[x][y];
-                    next_field[x][y] = 0;
+                    //field[x][y]=next_field[x][y];
+                    //next_field[x][y] = 0;
                     //vizinhos[x][y]=0;
                 }
                 /*if (states.length() > 0) {
@@ -136,7 +135,7 @@ public class Board extends Agent {
 
             }
             respostas++;
-            myAgent.addBehaviour(new SendStateList());
+            //myAgent.addBehaviour(new SendStateList());
         }
     }
 
@@ -375,17 +374,23 @@ public class Board extends Agent {
             int x, y;
             String actives = "";
             String viz_mentirosos = "";
+            String para_cidade="";
             states = "";
             //iniciar mensagens
             AID receiver = new AID();
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
             AID receiver_mentiroso = new AID();
             ACLMessage msg_mentiroso = new ACLMessage(ACLMessage.INFORM);
+            AID receiver_cidade = new AID();
+            ACLMessage msg_cidade = new ACLMessage(ACLMessage.INFORM);
+            receiver_cidade.setLocalName("Cidade");
             receiver_mentiroso.setLocalName("Mentiroso");
             receiver.setLocalName("Caotico");
+            msg_cidade.addReceiver(receiver_cidade);
             msg.addReceiver(receiver);
             msg_mentiroso.addReceiver(receiver_mentiroso);
             msg_mentiroso.setConversationId("" + System.currentTimeMillis());
+            msg_cidade.setConversationId(""+System.currentTimeMillis());
             //msg.setContent("Alive");
             msg.setConversationId("" + System.currentTimeMillis());
             for (x = 0; x < COLUMNS; x++) {
@@ -393,12 +398,15 @@ public class Board extends Agent {
                     if (field[x][y] == 4) {
                         viz_mentirosos = setup_liar_question(viz_mentirosos, x, y);
                     }
+                    if(field[x][y]==5){
+                        para_cidade=para_cidade+x+","+y+",";
+                    }
                     states = states + x + "," + y + "," + next_field[x][y] + ",";
                     if (field[x][y] > 0) {
                         actives = actives + x + "," + y + "," + field[x][y] + ",";
                     }
-                    field[x][y] = next_field[x][y];
-                    next_field[x][y] = 0;
+                    //field[x][y] = next_field[x][y];
+                    //next_field[x][y] = 0;
                 }
             }
             if (actives.length() > 0) {
@@ -410,10 +418,15 @@ public class Board extends Agent {
             if (viz_mentirosos.length() > 0) {
                 viz_mentirosos = viz_mentirosos.substring(0, viz_mentirosos.length() - 1);
             }
+            if (para_cidade.length() > 0) {
+                para_cidade = para_cidade.substring(0, para_cidade.length() - 1);
+            }
             msg.setContent(actives);
             //System.out.println(viz_mentirosos);
             msg_mentiroso.setContent(viz_mentirosos);
-            //myAgent.send(msg);
+            msg_cidade.setContent(para_cidade);
+            //myAgent.send(msg_cidade);
+            myAgent.send(msg);
             myAgent.send(msg_mentiroso);
 
         }
@@ -514,6 +527,12 @@ public class Board extends Agent {
     public class SendStateList extends OneShotBehaviour {
 
         public void action() {
+            for (int x = 0; x < COLUMNS; x++) {
+                for (int y = 0; y < ROWS; y++) {
+                    field[x][y] = next_field[x][y];
+                    next_field[x][y] = 0;
+                }
+            }
 
             AID receiver = new AID();
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
