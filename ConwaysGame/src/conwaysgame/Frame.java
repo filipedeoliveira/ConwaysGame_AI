@@ -80,6 +80,9 @@ public class Frame extends JFrame implements MouseListener, KeyListener {
         if (e.getButton() == 3) {
             cell = world.clicked(e.getX() - insetLeft, e.getY() - insetTop,4);
         }
+        if(e.getButton()==2){
+            cell = world.clicked(e.getX() - insetLeft, e.getY() - insetTop,3);
+        }
         String msg = "" + cell.getX() + "," + cell.getY() + "," + cell.getState();
         GuiEvent ge = new GuiEvent(msg, 1);
         myagent.postGuiEvent(ge);
