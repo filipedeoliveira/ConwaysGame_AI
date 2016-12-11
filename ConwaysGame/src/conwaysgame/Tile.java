@@ -122,7 +122,10 @@ public class Tile
             case 2:
                 g.drawImage(caotico, x * width, y * height, null);
                 break;
-               
+            case 3:
+                g.drawImage(movel, x * width, y * height, null);
+                break;
+                
             default:
         }
         /*if(!opened) 

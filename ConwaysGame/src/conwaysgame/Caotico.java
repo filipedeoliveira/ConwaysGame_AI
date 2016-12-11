@@ -54,7 +54,7 @@ public class Caotico extends Agent {
                         int y = Integer.parseInt(parts[i + 1]);
                         int state = Integer.parseInt(parts[i + 2]);
                         activos[x][y].increment_gen(state);
-                        System.out.println(x+","+y+"    state:"+activos[x][y].getState()+"    ger:"+activos[x][y].getGer_stopped()+"           moved:"+activos[x][y].getStabilized());
+                        //System.out.println(x+","+y+"    state:"+activos[x][y].getState()+"    ger:"+activos[x][y].getGer_stopped()+"           moved:"+activos[x][y].getStabilized());
                     }
 
                     //board.next_gen(states);
@@ -75,7 +75,7 @@ public class Caotico extends Agent {
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
             receiver.setLocalName("Campo");
             msg.addReceiver(receiver);
-
+            System.out.println(changes);
             //msg.setContent("Alive");
             msg.setConversationId("" + System.currentTimeMillis());
             for (int x = 0; x < COLUMNS; x++) {
@@ -89,6 +89,7 @@ public class Caotico extends Agent {
 
                 }
             }
+            System.out.println(changes);
             if (changes.length() > 0) {
                 changes = changes.substring(0, changes.length() - 1);
             }

@@ -74,7 +74,7 @@ public class InterfaceAgent extends GuiAgent{
                 //System.out.println("recebi mensagem");
                 String[] parts = msg.getContent().split(",");
                 int i=0;
-                System.out.println(msg.getContent());
+                //System.out.println(msg.getContent());
                 for(i=0;i<parts.length;i=i+3){
                     //System.out.println("entrei");
                     TreeInt cell= new TreeInt(Integer.parseInt(parts[i]), Integer.parseInt(parts[i+1]), Integer.parseInt(parts[i+2]));

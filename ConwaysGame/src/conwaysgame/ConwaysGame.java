@@ -50,7 +50,8 @@ public class ConwaysGame {
          int i,j;
          mc.startAgentInPlatform("Interface", "conwaysgame.InterfaceAgent");
          mc.startAgentInPlatform("Campo", "conwaysgame.Board");
-         mc.startAgentInPlatform("Caotico", "conwaysgame.Caotico");
+         //mc.startAgentInPlatform("Caotico", "conwaysgame.Caotico");
+         mc.startAgentInPlatform("Mobile", "conwaysgame.MobileAgent");
          /*for(i=0;i<50;i++){
              for(j=0;j<50;j++){
                  mc.startAgentInPlatform(i+","+j, "conwaysgame.NormalCell");

@@ -58,6 +58,9 @@ public class Board extends Agent {
                         if (msg.getSender().getLocalName().equals("Caotico")) {
                             myAgent.addBehaviour(new SendStateList());
                         }
+                        if (msg.getSender().getLocalName().equals("Mobile")) {
+                            myAgent.addBehaviour(new SendStateList());
+                        }
                         break;
                 }
             }
@@ -278,7 +281,10 @@ public class Board extends Agent {
             states = "";
             AID receiver = new AID();
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-            receiver.setLocalName("Caotico");
+            //receiver.setLocalName("Caotico");
+            //msg.addReceiver(receiver);
+            receiver=new AID();
+            receiver.setLocalName("Mobile");
             msg.addReceiver(receiver);
 
             //msg.setContent("Alive");
@@ -310,18 +316,18 @@ public class Board extends Agent {
         //método que calcula o valor da p´roxima geração com base nos vizinhos
         private void calc_next_value(int x, int y, int neighbours) {
             if (neighbours == 3) {
-                System.out.println(x + "," + y);
+                //System.out.println(x + "," + y);
             }
-            if (neighbours < 2 && field[x][y] > 0) {
+            if (neighbours < 2 && (field[x][y] == 1|| field[x][y] == 2)) {
                 next_field[x][y] = 0;
             }
-            if (neighbours > 3 && field[x][y] > 0) {
+            if (neighbours > 3 && (field[x][y] == 1|| field[x][y] == 2)) {
                 next_field[x][y] = 0;
             }
             if (neighbours == 3 && field[x][y] == 0) {
                 next_field[x][y] = 1;
             }
-            if ((neighbours == 2 || neighbours == 3) && field[x][y] > 0) {
+            if ((neighbours == 2 || neighbours == 3) && (field[x][y] == 1|| field[x][y] == 2)) {
                 next_field[x][y] = 1;
             }
 
