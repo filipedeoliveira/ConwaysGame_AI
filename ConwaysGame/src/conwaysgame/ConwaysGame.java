@@ -51,7 +51,7 @@ public class ConwaysGame {
          mc.startAgentInPlatform("Interface", "conwaysgame.InterfaceAgent");
          mc.startAgentInPlatform("Campo", "conwaysgame.Board");
 
-         //mc.startAgentInPlatform("Caotico", "conwaysgame.Caotico");
+         mc.startAgentInPlatform("Caotico", "conwaysgame.Caotico");
          mc.startAgentInPlatform("Mobile", "conwaysgame.MobileAgent");
          mc.startAgentInPlatform("Mentiroso","conwaysgame.Mentiroso");
 
