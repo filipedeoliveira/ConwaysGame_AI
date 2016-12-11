@@ -20,8 +20,8 @@ public class Caotico extends Agent {
 
     private ArrayList<TreeInt> estaveis;
 
-    private static int ROWS = 5;
-    private static int COLUMNS = 5;
+    private static int ROWS = 50;
+    private static int COLUMNS = 50;
 
     private TreeInt[][] activos;
     //private int[][] estaveis;
@@ -44,7 +44,7 @@ public class Caotico extends Agent {
         public void action() {
             ACLMessage msg = receive();
             if (msg != null) {
-                //System.out.println("recebi mensagem");
+                System.out.println("caótico:" + msg.getContent());
                 if (msg.getContent().length() > 0) {
                     String[] parts = msg.getContent().split(",");
                     int i = 0;
@@ -54,7 +54,7 @@ public class Caotico extends Agent {
                         int y = Integer.parseInt(parts[i + 1]);
                         int state = Integer.parseInt(parts[i + 2]);
                         activos[x][y].increment_gen(state);
-                        System.out.println(x+","+y+"    state:"+activos[x][y].getState()+"    ger:"+activos[x][y].getGer_stopped()+"           moved:"+activos[x][y].getStabilized());
+                        //System.out.println(x+","+y+"    state:"+activos[x][y].getState()+"    ger:"+activos[x][y].getGer_stopped()+"           moved:"+activos[x][y].getStabilized());
                     }
 
                     //board.next_gen(states);

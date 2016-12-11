@@ -16,11 +16,7 @@ public class Tile
     private int status;   
     private int x;
     private int y;
-    private boolean bomb;
-    private boolean opened;
-    private boolean flag;
-    private int amountOfNearBombs;
-     
+    
     private static int width = Frame.getScreenWidth()/World.getWidth(); 
     private static int height = Frame.getScreenHeight()/World.getHeight(); 
      
@@ -45,68 +41,11 @@ public class Tile
         }
         return status;
     }
-    
-    public void setOpenedImage(BufferedImage openedImage)
-    {
-        this.caotico = caotico;
-    }
-    
-    
-     
-    public void setOpened(boolean opened)
-    {
-        this.opened = opened;
-    }
-     
-    public boolean isOpened()
-    {
-        return opened;
-    }
-     
-    public void setBomb(boolean bomb)
-    {
-        this.bomb = bomb;
-    }
-     
-    public boolean isBomb()
-    {
-        return bomb;
-    }
-     
-    public void setAmountOfNearBombs(int amountOfNearBombs)
-    {
-        this.amountOfNearBombs = amountOfNearBombs;
-    }
-     
-    public int getAmountOfNearBombs()
-    {
-        return amountOfNearBombs;
-    }
-     
-    public boolean canOpen()
-    {
-        return !opened&&!bomb&&amountOfNearBombs >= 0;
-    }
-     
-    public void placeFlag()
-    {
-        if(flag) flag = false;
-        else
-        {
-            if(!opened) flag = true;
-        }
-    }
-     
-    public boolean isFlag()
-    {
-        return flag;
-    }
+  
      
     public void reset()
     {
-        flag = false;
-        bomb = false;
-        opened = false;
+        status = 0;
     }
  
     public void draw(Graphics g)
@@ -122,27 +61,12 @@ public class Tile
             case 2:
                 g.drawImage(caotico, x * width, y * height, null);
                 break;
+            case 4:
+                g.drawImage(mentiroso, x * width, y * height, null);
+                break;
                
             default:
         }
-        /*if(!opened) 
-        {
-            if(!flag) g.drawImage(normal, x * width, y * height, null);
-            else g.drawImage(normal, x * width, y * height, null);
-        }
-        else
-        {
-            if(bomb) g.drawImage(caotico, x * width, y * height, null);
-            else
-            {
-                g.drawImage(cidade, x * width, y * height, null);
-                if(amountOfNearBombs > 0)
-                {
-                    g.setColor(Color.WHITE);
-                    g.drawString("" + amountOfNearBombs, x * width + 7, y * height + height - 4);
-                }
-            }
-        }*/
     }
      
     public static int getWidth()
