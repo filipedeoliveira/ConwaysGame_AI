@@ -8,16 +8,10 @@ import java.util.Random;
  
 public class World
 {
-    private static int width = 5;
-    private static int height = 5;
+    private static int width = 50;
+    private static int height = 50;
      
-    private final int AMOUNT_OF_BOMBS = 40;
-     
-    private boolean finish;
-    private boolean dead;
-     
-    private Random random;
-     
+    
     private Tile[] [] tiles;
      
     private BufferedImage normal = ImageLoader.scale(ImageLoader.loadImage("gfx/normal.png"), Tile.getWidth(), Tile.getHeight());
@@ -44,42 +38,9 @@ public class World
         reset();
     }
      
-    public void clickedLeft(int x, int y)
-    {
-        if(!dead&&!finish)
-        {
-            int tileX = x/Tile.getWidth();
-            int tileY = y/Tile.getHeight();
-             
-            if(!tiles[tileX] [tileY].isFlag())
-            {
-                tiles[tileX] [tileY].setOpened(true);
-                 
-                if(tiles[tileX] [tileY].isBomb()) dead = true;
-                else
-                {
-                    if(tiles[tileX] [tileY].getAmountOfNearBombs() == 0) 
-                    {
-                        //open(tileX, tileY);
-                    }
-                }
-                 
-                //checkFinish();
-            }
-        }
-    }
+    
      
-    public void clickedRight(int x, int y)
-    {
-        if(!dead&&!finish)
-        {
-            int tileX = x/Tile.getWidth();
-            int tileY = y/Tile.getHeight();
-            tiles[tileX] [tileY].placeFlag();
-             
-            //checkFinish();
-        }
-    }
+    
     
     public TreeInt clicked(int x, int y,int i) {
         
@@ -100,8 +61,7 @@ public class World
             }
         }
          
-        dead = false;
-        finish = false;
+        
          
         
     }
@@ -114,17 +74,6 @@ public class World
             {
                 tiles[x] [y].draw(g);
             }
-        }
-         
-        if(dead)
-        {
-            g.setColor(Color.RED);
-            g.drawString("You're dead!", 10, 30);
-        }
-        else if(finish)
-        {
-            g.setColor(Color.RED);
-            g.drawString("You won!", 10, 30);
         }
     }
      
